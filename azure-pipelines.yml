@@ -1,0 +1,80 @@
+# This pipeline file can be used to run the tests in Azure DevOps
+
+trigger: none
+
+# Store the BrowserStack credentials in the Library in a variable group
+variables:
+  - group: bstack-tests
+
+# Create a pipeline parameter for platform
+# Also, create 2 user-set pipeline variables: tests & devices
+parameters:
+  - name: platform
+    type: string
+    default: android
+    values:
+      - android
+      - ios
+# When the pipeline is finished running,
+# the screenshots & test results will be downloadable
+# from the published artifacts
+jobs:
+  - job: Run_WebdriverIO_Tests
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: Bash@3
+        displayName: 'Install dependencies & Run tests'
+        inputs:
+          targetType: 'inline'
+          script: |
+            # Stringify the pipeline list variables
+            tests="$(tests)"
+            platform=${{ parameters.platform }}
+            devices="$(devices)"
+
+            echo "TESTS=$tests"
+            echo "PLATFORM=$platform"
+            echo "DEVICES=$devices"
+
+            # Create a list of test file names
+            test_files=()
+            readarray -t test_names <<< $tests
+
+            echo "Test Names: $test_names"
+
+            # Create a list of test file paths
+            for name in $test_names; do
+              test_files+=("features/$name.feature")
+              echo "Test Name: $name"
+            done
+            tests_to_run=$(printf "%s " "${test_files[@]}")
+
+            echo "Tests to Run: $tests_to_run"
+            echo "Test Run Command: DEVICES=$devices npm run test $tests_to_run"
+
+            # Install project dependencies
+            cd $platform
+            npm i
+
+            # Run the specified test files
+            DEVICES=$devices npm run test $tests_to_run
+      - task: PublishBuildArtifacts@1
+        condition: succeededOrFailed()
+        inputs:
+          PathtoPublish: '/home/vsts/work/1/s/${{ parameters.platform }}/junit-report/'
+          ArtifactName: "junit-report"
+          publishLocation: 'Container'
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: "./s/${{ parameters.platform }}/junit-report/results-*.xml"
+          searchFolder: '$(Agent.BuildDirectory)'
+          testRunTitle: '$(platform)-$(devices)-$(tests)'
+      - task: PublishBuildArtifacts@1
+        condition: succeededOrFailed()
+        inputs:
+          PathtoPublish: "./${{ parameters.platform }}/screenshots/"
+          ArtifactName: "${{ parameters.platform }}_screenshots"
+          publishLocation: 'Container'

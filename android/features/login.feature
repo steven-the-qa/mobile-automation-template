@@ -1,12 +1,10 @@
-Feature: The Internet Guinea Pig Website
+Feature:
+    As a user with an existing account
+    I want to use the Login form to log in
 
-  Scenario Outline: As a user, I can log into the secure area
-
-    Given I am on the login page
-    When I login with <username> and <password>
-    Then I should see a flash message saying <message>
-
-    Examples:
-      | username | password             | message                        |
-      | tomsmith | SuperSecretPassword! | You logged into a secure area! |
-      | foobar   | barfoo               | Your username is invalid!      |
+Background:
+    Given User dismisses an alert message on launch
+    And User checks if Login screen loaded
+Scenario:
+    When User scrolls to the Login button
+    Then User clicks the Login button

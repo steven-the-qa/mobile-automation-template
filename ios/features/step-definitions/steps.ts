@@ -1,22 +1,20 @@
 import { Given, When, Then } from '@wdio/cucumber-framework';
+import { dismiss_native_alerts, scrollIntoView } from '../support/touchActions';
 
-import LoginPage from '../pageobjects/login.page.ts';
-import SecurePage from '../pageobjects/secure.page.ts';
+import Login from '../pages/login.page';
 
-const pages = {
-    login: LoginPage
-}
+Given('User dismisses an alert message on launch', async () => {
+    await dismiss_native_alerts()
+})
 
-Given(/^I am on the (\w+) page$/, async (page) => {
-    await pages[page].open()
-});
+Given('User checks if Login screen loaded', async () => {
+    await Login.checkIfLoaded()
+})
 
-When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await LoginPage.login(username, password)
-});
+When('User scrolls to the Login button', async () => {
+    await scrollIntoView(Login.loginBtn)
+})
 
-Then(/^I should see a flash message saying (.*)$/, async (message) => {
-    await expect(SecurePage.flashAlert).toBeExisting();
-    await expect(SecurePage.flashAlert).toHaveTextContaining(message);
-});
-
+Then('User clicks the Login button', async () => {
+    await (await Login.loginBtn).click()
+})

@@ -1,22 +1,16 @@
 import { Given, When, Then } from '@wdio/cucumber-framework';
+import { scrollIntoView } from '../support/touchActions';
 
-import LoginPage from '../pageobjects/login.page.ts';
-import SecurePage from '../pageobjects/secure.page.ts';
+import Login from '../pages/login.page';
 
-const pages = {
-    login: LoginPage
-}
+Given('User checks if Login screen loaded', async () => {
+    await Login.checkIfLoaded()
+})
 
-Given(/^I am on the (\w+) page$/, async (page) => {
-    await pages[page].open()
-});
+When('User scrolls to the Login button', async () => {
+    await scrollIntoView(Login.loginBtn)
+})
 
-When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await LoginPage.login(username, password)
-});
-
-Then(/^I should see a flash message saying (.*)$/, async (message) => {
-    await expect(SecurePage.flashAlert).toBeExisting();
-    await expect(SecurePage.flashAlert).toHaveTextContaining(message);
-});
-
+Then('User clicks the Login button', async () => {
+    await (await Login.loginBtn).click()
+})
