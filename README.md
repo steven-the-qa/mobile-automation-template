@@ -1,6 +1,6 @@
 # Use WebdriverIO to test a cross-platform mobile app
 
-### Introduction
+## Introduction
 
 Automate tests for your Android & iOS apps using WebdriverIO & TypeScript!
 
@@ -10,7 +10,7 @@ Automate tests for your Android & iOS apps using WebdriverIO & TypeScript!
    https://github.com/steven-the-qa/mobile-automation-template
 </a>
 
-### Tech Stack
+## Tech Stack
 
 - WebdriverIO (Appium support)
 - TypeScript (type safety)
