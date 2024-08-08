@@ -1,9 +1,17 @@
-# Mobile Automation Framework
+# Use WebdriverIO to test a cross-platform mobile app
 
 ### Introduction
+
 Automate tests for your Android & iOS apps using WebdriverIO & TypeScript!
 
+## GitHub Repo
+
+<a href="https://github.com/steven-the-qa/mobile-automation-template" target="_blank" rel='noopener noreferrer'>
+   https://github.com/steven-the-qa/mobile-automation-template
+</a>
+
 ### Tech Stack
+
 - WebdriverIO (Appium support)
 - TypeScript (type safety)
 - NodeJS (writing to the file system)
@@ -12,11 +20,9 @@ Automate tests for your Android & iOS apps using WebdriverIO & TypeScript!
 
 ## Getting Started
 
-This section is written assuming you want to contribute to this framework.
-
-First, make sure you have Node 16 installed on your computer. I use Node 16.15.1.
-
-First, make sure to clone the repo. Then, within the `ios` and `android` directories, run `npm install` to install dependencies.
+1. Install Node 16 or higher
+2. Clone the repo
+3. From the `ios` and `android` directories, run `npm install` to install dependencies
 
 That's it! At this point, you should be able to run tests.
 
@@ -43,14 +49,11 @@ That's it! At this point, you should be able to run tests.
 2. DEVICE={device_name1} {device_name2} npm run test {feature_path}
 
 iOS Devices:
+
 - iphone_12_pro_16
 - iphone_13_pro_15
 
 Android Devices:
+
 - pixel_6_12
 - galaxy_s21_12
-
-### Contribute
-My website has plenty of ways to contact me: https://www.stevenboutcher.com.
-
-I prefer LinkedIn or email!
